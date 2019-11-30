@@ -124,7 +124,7 @@
             this.ClientSize = new System.Drawing.Size(169, 228);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.button1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Form2";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Соединение с БД";

@@ -8,3 +8,13 @@ c:\users\kirill\documents\visual studio 2015\Projects\WindowsFormsApplication1\W
 c:\users\kirill\documents\visual studio 2015\Projects\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
 C:\Users\Kirill\documents\visual studio 2015\Projects\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csprojResolveAssemblyReference.cache
 C:\Users\Kirill\documents\visual studio 2015\Projects\WindowsFormsApplication1\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form2.resources
+C:\Projects\execSQL\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe.config
+C:\Projects\execSQL\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+C:\Projects\execSQL\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+C:\Projects\execSQL\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csprojAssemblyReference.cache
+C:\Projects\execSQL\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
+C:\Projects\execSQL\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form2.resources
+C:\Projects\execSQL\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+C:\Projects\execSQL\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csproj.GenerateResource.cache
+C:\Projects\execSQL\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+C:\Projects\execSQL\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb

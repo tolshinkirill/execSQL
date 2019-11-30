@@ -35,7 +35,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.b_executeScript = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.l_timer = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tb_pathToScript = new System.Windows.Forms.TextBox();
             this.b_openFileDialog = new System.Windows.Forms.Button();
@@ -94,18 +94,18 @@
             this.label3.TabIndex = 5;
             this.label3.Text = "Время выполнения:";
             // 
-            // label4
+            // l_timer
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(147, 186);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(34, 13);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "00:00";
+            this.l_timer.AutoSize = true;
+            this.l_timer.Location = new System.Drawing.Point(147, 186);
+            this.l_timer.Name = "l_timer";
+            this.l_timer.Size = new System.Drawing.Size(49, 13);
+            this.l_timer.TabIndex = 6;
+            this.l_timer.Text = "00:00:00";
             // 
             // timer1
             // 
-            this.timer1.Interval = 1;
+            this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // tb_pathToScript
@@ -144,7 +144,7 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.b_openFileDialog);
             this.Controls.Add(this.tb_pathToScript);
-            this.Controls.Add(this.label4);
+            this.Controls.Add(this.l_timer);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.b_executeScript);
             this.Controls.Add(this.label2);
@@ -153,6 +153,7 @@
             this.Controls.Add(this.dtp_from);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "execSQL";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -167,7 +168,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button b_executeScript;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label l_timer;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.TextBox tb_pathToScript;
         private System.Windows.Forms.Button b_openFileDialog;

@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace WindowsFormsApplication1
 {
@@ -23,7 +18,7 @@ namespace WindowsFormsApplication1
         public Form1()
         {
             InitializeComponent();
-            tb_pathToScript.Text = @"C:\script.sql";
+            tb_pathToScript.Text = @"C:\temp\script.sql";
             openFileDialog1.FileName = tb_pathToScript.Text;
         }
 
@@ -53,36 +48,42 @@ namespace WindowsFormsApplication1
                 _userLogin = userLogin;
                 _userPassword = userPassword;
             }
-
-            // string connectionString = @"Data Source=localhost;Initial Catalog=Demodb;User ID=sa;Password=demol23";
-
             string connectionString = string.Format(@"Data Source={0};User ID={1};Password={2}", serverAddress, userLogin, userPassword);
+            string pathToResultFile = Path.GetDirectoryName(tb_pathToScript.Text) + @"\result.csv";
+            bool resultIsSuccess = false;
 
             // Run this procedure in an appropriate event.  
             counter = 0;
-            //timer1.Interval = 600;
-            timer1.Enabled = true;
+            l_timer.Text = "00:00:00";
+            timer1.Start();
 
+            b_openFileDialog.Enabled = false;
             b_executeScript.Enabled = false;
             dtp_from.Enabled = false;
             dtp_to.Enabled = false;
             await Task.Run(() =>
             {
-                // runSqlScriptFile(@"script.sql", connectionString);
-                runSqlScriptFile(tb_pathToScript.Text, connectionString);
+                resultIsSuccess = runSqlScriptFile(tb_pathToScript.Text, connectionString);
             });
+            b_openFileDialog.Enabled = true;
             b_executeScript.Enabled = true;
             dtp_from.Enabled = true;
             dtp_to.Enabled = true;
 
-            timer1.Enabled = false;
+            timer1.Stop();
+            if (resultIsSuccess)
+            {
+                MessageBox.Show("Результат запроса:\n" + pathToResultFile, "Выполнено");
+            }
         }
 
         private bool runSqlScriptFile(string pathStoreProceduresFile, string connectionString)
         {
+            //Thread.Sleep(5000);
             try
             {
                 string script = File.ReadAllText(pathStoreProceduresFile);
+                string path = Path.GetDirectoryName(pathStoreProceduresFile);
 
                 // split script on GO command
                 System.Collections.Generic.IEnumerable<string> commandStrings = Regex.Split(script, @"^\s*GO\s*$",
@@ -101,7 +102,36 @@ namespace WindowsFormsApplication1
                                 {
                                     try
                                     {
-                                        command.ExecuteNonQuery();
+                                        SqlDataReader dr = command.ExecuteReader();
+                                        using (System.IO.StreamWriter fs = new System.IO.StreamWriter(path + @"\result.csv"))
+                                        {
+                                            // Loop through the fields and add headers
+                                            for (int i = 0; i < dr.FieldCount; i++)
+                                            {
+                                                string name = dr.GetName(i);
+                                                if (name.Contains(","))
+                                                    name = "\"" + name + "\"";
+
+                                                fs.Write(name + ",");
+                                            }
+                                            fs.WriteLine();
+
+                                            // Loop through the rows and output the data
+                                            while (dr.Read())
+                                            {
+                                                for (int i = 0; i < dr.FieldCount; i++)
+                                                {
+                                                    string value = dr[i].ToString();
+                                                    if (value.Contains(","))
+                                                        value = "\"" + value + "\"";
+
+                                                    fs.Write(value + ",");
+                                                }
+                                                fs.WriteLine();
+                                            }
+
+                                            fs.Close();
+                                        }
                                     }
                                     catch (SqlException ex)
                                     {
@@ -142,22 +172,9 @@ namespace WindowsFormsApplication1
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            counter = counter + 1;
-            label4.Text = counter.ToString();
-
-            /*if (counter >= 10)
-            {
-                // Exit loop code.  
-                timer1.Enabled = false;
-                counter = 0;
-            }
-            else
-            {
-                // Run your procedure here.  
-                // Increment counter.  
-                counter = counter + 1;
-                label4.Text = counter.ToString();
-            }*/
+            counter += 1;
+            var timespan = TimeSpan.FromSeconds(counter);
+            l_timer.Text = timespan.ToString(@"hh\:mm\:ss");
         }
 
         private void tb_pathToScript_TextChanged(object sender, EventArgs e)
@@ -176,14 +193,6 @@ namespace WindowsFormsApplication1
             {
                 //Get the path of specified file
                 tb_pathToScript.Text = openFileDialog1.FileName;
-
-                //Read the contents of the file into a stream
-                /*var fileStream = openFileDialog1.OpenFile();
-
-                using (StreamReader reader = new StreamReader(fileStream))
-                {
-                    string fileContent = reader.ReadToEnd();
-                }*/
             }
         }
     }
