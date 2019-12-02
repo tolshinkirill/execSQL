@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Text;
 
 namespace WindowsFormsApplication1
 {
@@ -82,8 +83,9 @@ namespace WindowsFormsApplication1
             //Thread.Sleep(5000);
             try
             {
-                string script = File.ReadAllText(pathStoreProceduresFile);
+                string script = File.ReadAllText(pathStoreProceduresFile, Encoding.GetEncoding(1251));
                 string path = Path.GetDirectoryName(pathStoreProceduresFile);
+                string delimiter = ";";
 
                 // split script on GO command
                 System.Collections.Generic.IEnumerable<string> commandStrings = Regex.Split(script, @"^\s*GO\s*$",
@@ -102,17 +104,17 @@ namespace WindowsFormsApplication1
                                 {
                                     try
                                     {
+                                        command.CommandTimeout = 3600; // 1 hour
                                         SqlDataReader dr = command.ExecuteReader();
-                                        using (System.IO.StreamWriter fs = new System.IO.StreamWriter(path + @"\result.csv"))
+
+                                        using (System.IO.StreamWriter fs = new System.IO.StreamWriter(path + @"\result.csv", false, Encoding.GetEncoding(1251)))
                                         {
                                             // Loop through the fields and add headers
                                             for (int i = 0; i < dr.FieldCount; i++)
                                             {
                                                 string name = dr.GetName(i);
-                                                if (name.Contains(","))
-                                                    name = "\"" + name + "\"";
-
-                                                fs.Write(name + ",");
+                                                name = name.Replace("\"", "'");
+                                                fs.Write("\"" + name + "\"" + delimiter);
                                             }
                                             fs.WriteLine();
 
@@ -122,10 +124,8 @@ namespace WindowsFormsApplication1
                                                 for (int i = 0; i < dr.FieldCount; i++)
                                                 {
                                                     string value = dr[i].ToString();
-                                                    if (value.Contains(","))
-                                                        value = "\"" + value + "\"";
-
-                                                    fs.Write(value + ",");
+                                                    value = value.Replace("\"", "'");
+                                                    fs.Write("\"" + value + "\"" + delimiter);
                                                 }
                                                 fs.WriteLine();
                                             }
